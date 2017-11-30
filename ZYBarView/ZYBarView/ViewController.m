@@ -6,6 +6,8 @@
 //  Copyright © 2017年 ZZY. All rights reserved.
 //
 
+#define RandomArray @[@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000)]
+
 #import "ViewController.h"
 #import "ZYPowerfulChartScrollView.h"
 #import "Masonry.h"
@@ -27,7 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.dataArray = [NSMutableArray arrayWithArray:@[@"100",@"200",@"999",@"123",@"888",@"100",@"200",@"999",@"123",@"888"]];
+    self.dataArray = [NSMutableArray arrayWithArray:RandomArray];
     
     _chartScrollView = [[ZYPowerfulChartScrollView alloc] init];
     _chartScrollView.chartDelegate = self;
@@ -64,7 +66,7 @@
 }
 
 - (IBAction)reloadClick:(id)sender {
-    self.dataArray = [@[@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000)] mutableCopy];
+    self.dataArray = [RandomArray mutableCopy];
     
     [_chartScrollView reloadData];
 

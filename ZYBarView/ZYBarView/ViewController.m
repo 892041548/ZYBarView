@@ -28,6 +28,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.dataArray = [NSMutableArray arrayWithArray:@[@"100",@"200",@"999",@"123",@"888",@"100",@"200",@"999",@"123",@"888"]];
+    
+    
     _chartScrollView = [[ZYPowerfulChartScrollView alloc] init];
     _chartScrollView.chartDelegate = self;
     _chartScrollView.chartDataSource = self;
@@ -37,11 +39,7 @@
     [_chartScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.chartView);
     }];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.dataArray = [@[@"10",@"20",@"30",@"30",@"50",@"10",@"10",@"10",@"10",@"10"] mutableCopy];
-        [_chartScrollView reloadData];
-    });
+
 }
 
 - (NSInteger)numberOfChartView
@@ -66,6 +64,12 @@
     NSLog(@"currentSelected%ld",(long)index);
 }
 
+- (IBAction)reloadClick:(id)sender {
+    self.dataArray = [@[@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000),@(arc4random() % 1000)] mutableCopy];
+    
+    [_chartScrollView reloadData];
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -4,7 +4,7 @@
 
 #define VIEW_WIDTH  (SCREEN_WIDTH - 40)
 #define VIEW_HEIGHT 180
-#define BarSpace  0
+#define BarSpace  15
 #define BarWidth  14 * SCREEN_WIDTH / 320
 #define CanTapView  YES
 
@@ -53,7 +53,7 @@
     }
     float min = [[rangeArray valueForKeyPath:@"@min.floatValue"] floatValue];
     NSInteger index = [rangeArray indexOfObject:@(min)];
-    
+    self.currentIndex = index;
     ZYBarChartView *selectView = _barChartArray[index];
     selectView.selected = YES;
     if ([self.chartDelegate respondsToSelector:@selector(chartViewCurrentSelectedIndex:)]) {
@@ -63,6 +63,9 @@
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
+    if (currentIndex == self.currentIndex) {
+        return;
+    }
     _currentIndex = currentIndex;
     if ( currentIndex < self.barChartArray.count) {
         ZYBarChartView *view = self.barChartArray[currentIndex];

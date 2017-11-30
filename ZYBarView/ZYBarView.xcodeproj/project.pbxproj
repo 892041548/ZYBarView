@@ -18,7 +18,7 @@
 		AF6DD39E1FCEB54A001F06FA /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = AF6DD3941FCEB549001F06FA /* MASViewConstraint.m */; };
 		AF6DD39F1FCEB54A001F06FA /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = AF6DD3951FCEB549001F06FA /* MASViewAttribute.m */; };
 		AFE293E51FCEA8C600A32139 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AFE293E41FCEA8C600A32139 /* AppDelegate.m */; };
-		AFE293E81FCEA8C600A32139 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFE293E71FCEA8C600A32139 /* ViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AFE293E81FCEA8C600A32139 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFE293E71FCEA8C600A32139 /* ViewController.m */; };
 		AFE293ED1FCEA8C600A32139 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFE293EC1FCEA8C600A32139 /* Assets.xcassets */; };
 		AFE293F01FCEA8C600A32139 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE293EE1FCEA8C600A32139 /* LaunchScreen.storyboard */; };
 		AFE293F31FCEA8C600A32139 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AFE293F21FCEA8C600A32139 /* main.m */; };

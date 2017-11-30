@@ -4,10 +4,9 @@
 
 #define VIEW_WIDTH  (SCREEN_WIDTH - 40)
 #define VIEW_HEIGHT 180
-#define BarSpace  25
+#define BarSpace  0
 #define BarWidth  14 * SCREEN_WIDTH / 320
 #define CanTapView  YES
-
 
 
 #import "ZYPowerfulChartScrollView.h"
@@ -17,45 +16,12 @@
 @interface ZYPowerfulChartScrollView ()<UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *barChartArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @end
 
 @implementation ZYPowerfulChartScrollView
 
-- (void)setDataArray:(NSArray *)dataArray
-{
-    _dataArray = dataArray;
-    
-    self.barChartArray = [NSMutableArray array];
-    
-    self.delegate = self;
-    self.contentSize = CGSizeMake((BarSpace + 2 * BarWidth) * dataArray.count + VIEW_WIDTH, VIEW_HEIGHT);
-    self.bounces = NO;
-    //设置scrollView的缓冲速度
-    self.decelerationRate = 0.1;
-    self.showsHorizontalScrollIndicator = NO;
-    self.showsVerticalScrollIndicator = NO;
-    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    float maxValue = [[dataArray valueForKeyPath:@"@max.floatValue"] floatValue];
-
-    for (NSInteger i = 0; i < dataArray.count; i ++) {
-        
-        ZYBarChartView *view = [[ZYBarChartView alloc] init];
-        view.frame = CGRectMake(VIEW_WIDTH/2 + i * (BarSpace + BarWidth * 2) - (BarWidth * 2)/2, 0, BarWidth * 2, VIEW_HEIGHT);
-        [self addSubview:view];
-        view.maxValue1 = maxValue;
-        view.XAxis = [NSString stringWithFormat:@"%ld",i + 1];
-        view.data = [dataArray[i] floatValue];
-        
-        view.userInteractionEnabled = CanTapView;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
-        
-        [view addGestureRecognizer:tap];
-        
-        [self.barChartArray addObject:view];
-    }
-}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -95,11 +61,72 @@
     }
 }
 
+- (void)setCurrentIndex:(NSInteger)currentIndex
+{
+    _currentIndex = currentIndex;
+    if ( currentIndex < self.barChartArray.count) {
+        ZYBarChartView *view = self.barChartArray[currentIndex];
+        [self slideChartView:self view:view];
+    }
+}
+
 - (void)tapClick:(UIGestureRecognizer *)gesture
 {
-    // 监听手势
     ZYBarChartView *view = (ZYBarChartView *)gesture.view;
     [self slideChartView:self view:view];
+}
+
+- (void)setChartDataSource:(id<ZYPowerfulChartScrollViewDataSource>)chartDataSource
+{
+    _chartDataSource = chartDataSource;
+    [self reloadData];
+}
+
+- (void)reloadData
+{
+    NSInteger count = [self.chartDataSource numberOfChartView];
+    self.barChartArray = [NSMutableArray array];
+    
+    self.delegate = self;
+    self.contentSize = CGSizeMake((BarSpace + 2 * BarWidth) * count + VIEW_WIDTH, VIEW_HEIGHT);
+    self.bounces = NO;
+    //设置scrollView的缓冲速度
+    self.decelerationRate = 0.1;
+    self.showsHorizontalScrollIndicator = NO;
+    self.showsVerticalScrollIndicator = NO;
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    self.dataArray = [NSMutableArray array];
+    @autoreleasepool {
+        
+        for (NSInteger i = 0; i < count; i ++) {
+            [self.dataArray addObject:[self.chartDataSource chartViewData:i]];
+        }
+        float maxValue = [[_dataArray valueForKeyPath:@"@max.floatValue"] floatValue];
+        
+        for (NSInteger i = 0; i < count; i ++) {
+            
+            ZYBarChartView *view = [[ZYBarChartView alloc] init];
+            view.frame = CGRectMake(VIEW_WIDTH/2 + i * (BarSpace + BarWidth * 2) - (BarWidth * 2)/2, 0, BarWidth * 2, VIEW_HEIGHT);
+            [self addSubview:view];
+            view.maxValue1 = maxValue;
+            view.data = [[self.chartDataSource chartViewData:i] floatValue];
+            view.XAxis = [self.chartDataSource chartViewXAxisTitle:i];
+            
+            view.userInteractionEnabled = CanTapView;
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+            
+            [view addGestureRecognizer:tap];
+            
+            if (_currentIndex > 0 && _currentIndex < count) {
+                if (i == _currentIndex) {
+                    view.selected = YES;
+                }
+            }
+            
+            [self.barChartArray addObject:view];
+        }
+    }
 }
 
 /*

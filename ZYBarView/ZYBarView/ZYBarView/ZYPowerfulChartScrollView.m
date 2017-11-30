@@ -23,68 +23,6 @@
 @implementation ZYPowerfulChartScrollView
 
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self slideChartView:scrollView view:nil];
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    
-    [self slideChartView:scrollView view:nil];
-    
-}
-
-- (void)slideChartView:(UIScrollView *)scrollView view:(ZYBarChartView *)tapView
-{
-    
-    NSMutableArray *rangeArray = [NSMutableArray array];
-    for (UIView *view in self.subviews) {
-        if ([view isKindOfClass:[ZYBarChartView class]]) {
-            ZYBarChartView *barView = (ZYBarChartView *)view;
-            float range = fabs(scrollView.contentOffset.x + VIEW_WIDTH/2 - barView.zy_centerX);
-            if (tapView) {
-                if ([tapView isEqual:view]) {
-                    range = -1;
-                }
-            }
-            [rangeArray addObject:@(range)];
-            barView.selected = NO;
-        }
-    }
-    float min = [[rangeArray valueForKeyPath:@"@min.floatValue"] floatValue];
-    NSInteger index = [rangeArray indexOfObject:@(min)];
-    self.currentIndex = index;
-    ZYBarChartView *selectView = _barChartArray[index];
-    selectView.selected = YES;
-    if ([self.chartDelegate respondsToSelector:@selector(chartViewCurrentSelectedIndex:)]) {
-        [self.chartDelegate chartViewCurrentSelectedIndex:index]; // 通知执行代理方法
-    }
-}
-
-- (void)setCurrentIndex:(NSInteger)currentIndex
-{
-    if (currentIndex == self.currentIndex) {
-        return;
-    }
-    _currentIndex = currentIndex;
-    if ( currentIndex < self.barChartArray.count) {
-        ZYBarChartView *view = self.barChartArray[currentIndex];
-        [self slideChartView:self view:view];
-    }
-}
-
-- (void)tapClick:(UIGestureRecognizer *)gesture
-{
-    ZYBarChartView *view = (ZYBarChartView *)gesture.view;
-    [self slideChartView:self view:view];
-}
-
-- (void)setChartDataSource:(id<ZYPowerfulChartScrollViewDataSource>)chartDataSource
-{
-    _chartDataSource = chartDataSource;
-    [self reloadData];
-}
-
 - (void)reloadData
 {
     NSInteger count = [self.chartDataSource numberOfChartView];
@@ -131,6 +69,70 @@
         }
     }
 }
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self slideChartView:scrollView view:nil];
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self slideChartView:scrollView view:nil];
+}
+
+- (void)slideChartView:(UIScrollView *)scrollView view:(ZYBarChartView *)tapView
+{
+    
+    NSMutableArray *rangeArray = [NSMutableArray array];
+    for (UIView *view in self.subviews) {
+        if ([view isKindOfClass:[ZYBarChartView class]]) {
+            ZYBarChartView *barView = (ZYBarChartView *)view;
+            float range = fabs(scrollView.contentOffset.x + VIEW_WIDTH/2 - barView.zy_centerX);
+            if (tapView) {
+                if ([tapView isEqual:view]) {
+                    range = -1;
+                }
+            }
+            [rangeArray addObject:@(range)];
+            barView.selected = NO;
+        }
+    }
+    float min = [[rangeArray valueForKeyPath:@"@min.floatValue"] floatValue];
+    NSInteger index = [rangeArray indexOfObject:@(min)];
+    ZYBarChartView *selectView = _barChartArray[index];
+    selectView.selected = YES;
+    if (index != self.currentIndex) {
+        if ([self.chartDelegate respondsToSelector:@selector(chartViewCurrentSelectedIndex:)]) {
+            [self.chartDelegate chartViewCurrentSelectedIndex:index];
+        }
+    }
+    self.currentIndex = index;
+
+}
+
+- (void)setCurrentIndex:(NSInteger)currentIndex
+{
+    if (currentIndex == self.currentIndex) {
+        return;
+    }
+    _currentIndex = currentIndex;
+    if (currentIndex < self.barChartArray.count) {
+        ZYBarChartView *view = self.barChartArray[currentIndex];
+        [self slideChartView:self view:view];
+    }
+}
+
+- (void)tapClick:(UIGestureRecognizer *)gesture
+{
+    ZYBarChartView *view = (ZYBarChartView *)gesture.view;
+    [self slideChartView:self view:view];
+}
+
+- (void)setChartDataSource:(id<ZYPowerfulChartScrollViewDataSource>)chartDataSource
+{
+    _chartDataSource = chartDataSource;
+    [self reloadData];
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -7,6 +7,7 @@
 
 @protocol ZYPowerfulChartScrollViewDelegate <NSObject>
 
+@optional
 - (void)chartViewCurrentSelectedIndex:(NSInteger)index;
 
 @end

@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) ZYPowerfulChartScrollView *chartScrollView;
 
-@property (weak, nonatomic) IBOutlet UIView *chartView;
+@property (strong, nonatomic) IBOutlet UIView *chartView;
 
 /**  */
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -29,7 +29,6 @@
     
     self.dataArray = [NSMutableArray arrayWithArray:@[@"100",@"200",@"999",@"123",@"888",@"100",@"200",@"999",@"123",@"888"]];
     
-    
     _chartScrollView = [[ZYPowerfulChartScrollView alloc] init];
     _chartScrollView.chartDelegate = self;
     _chartScrollView.chartDataSource = self;
@@ -39,9 +38,9 @@
     [_chartScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.chartView);
     }];
-
 }
 
+#pragma ZYChartViewDataSource
 - (NSInteger)numberOfChartView
 {
     return 10;

@@ -25,14 +25,14 @@
                     <rect key="frame" x="0.0" y="221" width="375" height="225"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elR-Tt-szP">
-                            <rect key="frame" x="20" y="5" width="335" height="180"/>
+                            <rect key="frame" x="20" y="0.0" width="335" height="180"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="180" id="Soz-Iu-Nd5"/>
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KM_xuanzhong" translatesAutoresizingMaskIntoConstraints="NO" id="TZW-rw-lsR">
-                            <rect key="frame" x="181" y="195" width="13" height="8"/>
+                            <rect key="frame" x="181" y="190" width="13" height="8"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="8" id="5WX-iO-74g"/>
                                 <constraint firstAttribute="width" constant="13" id="FFT-Fz-H4s"/>
@@ -47,7 +47,7 @@
                         <constraint firstItem="elR-Tt-szP" firstAttribute="leading" secondItem="fg6-eY-aWv" secondAttribute="leading" constant="20" id="FlQ-Xs-smD"/>
                         <constraint firstItem="TZW-rw-lsR" firstAttribute="top" secondItem="elR-Tt-szP" secondAttribute="bottom" constant="10" id="Iw1-kY-rLy"/>
                         <constraint firstAttribute="trailing" secondItem="elR-Tt-szP" secondAttribute="trailing" constant="20" id="Mkj-Fk-yr6"/>
-                        <constraint firstItem="elR-Tt-szP" firstAttribute="top" secondItem="fg6-eY-aWv" secondAttribute="top" constant="5" id="r2V-3O-ET8"/>
+                        <constraint firstItem="elR-Tt-szP" firstAttribute="top" secondItem="fg6-eY-aWv" secondAttribute="top" id="r2V-3O-ET8"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J4K-5c-Vc2">

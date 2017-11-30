@@ -5,10 +5,15 @@
 
 
 #define BarWidth  (14 * SCREEN_WIDTH / 320)
-#define MAX_HEIGHT  160
+#define BarTopMargin  20
 #define BarAndXAxisSpace  10
+#define XAxisLabelHeight  10
 
-#define isEmptyString(str) ([str isKindOfClass:[NSNull class]] || !str || [str isEqualToString:@""] || [str isEqualToString:@"<null>"])
+#define MaxBarHeight  ((self.frame.size.height - BarTopMargin -BarAndXAxisSpace - XAxisLabelHeight) > 0 ? (self.frame.size.height - BarTopMargin - BarAndXAxisSpace - XAxisLabelHeight ) : 1)
+
+#define trim(str) [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+
+#define isEmptyString(str) ([str isKindOfClass:[NSNull class]] || !str || [trim(str) isEqualToString:@""] || [str isEqualToString:@"<null>"])
 
 #import "ZYBarChartView.h"
 #import "ZYPowerfulChartScrollView.h"
@@ -27,13 +32,14 @@
 - (void)setData:(CGFloat)data
 {
     _data = data;
+    
     float zhuZhuangHigh = 1;
     if (self.maxValue1 != 0) {
-        zhuZhuangHigh  = (data/self.maxValue1)*MAX_HEIGHT == 0?1:(data/self.maxValue1)*MAX_HEIGHT;
+        zhuZhuangHigh  = (data/self.maxValue1)*MaxBarHeight == 0?1:(data/self.maxValue1)*MaxBarHeight;
     }
     
     self.firstBarLabel.zy_height = zhuZhuangHigh;
-    self.firstBarLabel.zy_y = MAX_HEIGHT - zhuZhuangHigh;
+    self.firstBarLabel.zy_y = BarTopMargin + MaxBarHeight - zhuZhuangHigh;
 }
 
 - (void)setXAxis:(NSString *)XAxis
@@ -63,7 +69,7 @@
 - (UILabel *)dateLabel
 {
     if (!_dateLabel) {
-        _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - BarAndXAxisSpace, self.frame.size.width, BarAndXAxisSpace)];
+        _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - XAxisLabelHeight, self.frame.size.width, XAxisLabelHeight)];
         _dateLabel.textAlignment = NSTextAlignmentCenter;
         _dateLabel.font = [UIFont systemFontOfSize:12];
         _dateLabel.textColor = [UIColor whiteColor];
